@@ -1,3 +1,4 @@
+import loader.MyComponents
 import org.scalatest.Suite
 import play.api.ApplicationLoader.Context
 

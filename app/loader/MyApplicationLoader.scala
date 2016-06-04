@@ -1,11 +1,13 @@
-import play.api.ApplicationLoader.Context
+package loader
+
+import controllers.{Assets, HomeController}
 import play.api._
 import play.api.cache.EhCacheComponents
 import play.api.i18n._
 import play.api.inject._
 import play.api.routing.Router
-import router.Routes
 import play.core.DefaultWebCommands
+import router.Routes
 
 class MyApplicationLoader extends ApplicationLoader {
 
@@ -15,9 +17,6 @@ class MyApplicationLoader extends ApplicationLoader {
   }
 }
 
-/**
- * An application builder for running an application in tests
- */
 class MyApplicationBuilder {
 
   def build(): Application = {
@@ -33,7 +32,7 @@ class MyApplicationBuilder {
   }
 }
 
-class MyComponents(context: ApplicationLoader.Context) 
+class MyComponents(context: ApplicationLoader.Context)
   extends BuiltInComponentsFromContext(context)
   with I18nComponents
   with EhCacheComponents {
@@ -48,9 +47,9 @@ class MyComponents(context: ApplicationLoader.Context)
       crypto
   }
 
-  lazy val homeController = new controllers.HomeController()
+  override lazy val router: Router = new Routes(httpErrorHandler, homeController, assets)
 
-  lazy val router: Router = new Routes(httpErrorHandler, homeController, assets)
+  lazy val homeController = new HomeController()
 
-  lazy val assets = new controllers.Assets(httpErrorHandler)
+  lazy val assets = new Assets(httpErrorHandler)
 }

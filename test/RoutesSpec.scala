@@ -1,3 +1,4 @@
+import loader.MyApplicationBuilder
 import play.api.libs.ws.WSClient
 import play.api.test.WsTestClient
 

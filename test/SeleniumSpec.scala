@@ -6,7 +6,7 @@ class SeleniumSpec
     with OneBrowserPerTest
     with HtmlUnitFactory {
 
-  "SeleniumSpec" should {
+  "The browser based tests" should {
 
     "work from within a browser" in {
 

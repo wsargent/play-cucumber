@@ -1,27 +1,24 @@
 package features.steps
 
-import org.scalatest.Matchers
-import cucumber.api.scala.{ ScalaDsl, EN }
-import cucumber.api.DataTable
-import cucumber.api.PendingException
-
-import play.api.test._
-import play.api._
-import play.api.mvc._
-
-import org.openqa.selenium._
+import cucumber.api.scala.{EN, ScalaDsl}
 import org.fluentlenium.core.filter.FilterConstructor._
-
+import org.scalatest.Matchers
+import play.api._
+import play.api.test._
 
 class StepDefinitions extends ScalaDsl with EN with Matchers {
 
   val webDriverClass = Helpers.HTMLUNIT
 
-  val app = FakeApplication()
-  val port = 3333 // or whatever you want
+  // Use a custom loader (FakeApplication uses GuiceApplicationBuilder under the hood)
+  val app = new loader.MyApplicationBuilder().build()
+
+  implicit val port: play.api.http.Port = new play.api.http.Port(-1)
 
   lazy val browser: TestBrowser = TestBrowser.of(webDriverClass, Some("http://localhost:" + port))
-  lazy val server = TestServer(port, app)
+
+  lazy val server = TestServer(port.value, app)
+
   def driver = browser.getDriver()
 
   Before() { s =>
